@@ -4,8 +4,7 @@
 
 
 #include <Servo.h>        //舵机库
-#include <Stepper.h>      //步进电机库
-
+#include <Stepper_28BYJ_48.h> //更新的步进电机库文件
 
     
 #define SERVO_PIN 2   //写字舵机接口号 
@@ -33,7 +32,7 @@
 
 Servo servo;              //写字舵机
 Servo servo_dot;          //打点舵机
-Stepper stepper(100, 4, 5, 6,7);  // 步进电机  速度100， in1~4端口 4 5 6 7
+Stepper_28BYJ_48 stepper(4,5,6,7);  // 步进电机   in1~4端口 4 5 6 7
 
 void setup() {
 
@@ -43,7 +42,6 @@ void setup() {
   servo.attach(SERVO_PIN);
   
   pinMode(DOT_PIN, OUTPUT);
-  stepper.setSpeed(100);    //设置走纸步进电机速度 1:64的电机速度不会很快，太快了扭矩会变小 (建议范围50~120)
 
 
 }
@@ -56,7 +54,7 @@ void setup() {
 
 void loop() 
 {
-/*
+//调试打点舵机的位置
 servo.write((SERVO_MIN + SERVO_MAX) / 2);
  for (int i=0;i<5;i++)
  {
@@ -66,8 +64,9 @@ servo.write((SERVO_MIN + SERVO_MAX) / 2);
   delay(DOT_DOWN_DELAY);
   delay(300);
  }
-/*
   delay(1500);
+
+  //调试写字舵机的位置
   for (int i=0;i<5;i++)
  {
   servo.write(SERVO_MIN);
@@ -75,8 +74,8 @@ servo.write((SERVO_MIN + SERVO_MAX) / 2);
   servo.write(SERVO_MAX);
   delay(800);
  }
-*/
-  stepper.step(500); //走纸幅度
+
+  stepper.step(500); //连续很长的纸
   delay(100);
 }
 

@@ -1,16 +1,17 @@
 //淘宝『有名称的店铺』https://somebodys.taobao.com/
-//更新日期 2018/08/29
+//更新日期 2018/09/07
 //Mini Telegraph 电报机 写字程序
+//本程序对应商品 https://item.taobao.com/item.htm?spm=a1z10.1-c.w4004-1266050943.20.5eaf3c6eT6FuhE&id=576633734176
 
-//本程序实时更新的最新版本https://create.arduino.cc/editor/wjd76/68303116-0495-4580-b125-6a339187df4f/preview
+//本程序实时更新的最新版本 https://create.arduino.cc/editor/wjd76/68303116-0495-4580-b125-6a339187df4f/preview
 //强烈推荐使用web版编译器查看
 
 #include <SoftwareSerial.h>  //蓝牙串口库 没有蓝牙模块也可以通过PC串口传输文字 
 
 #include <Servo.h>        //舵机库
-#include <Stepper.h>      //步进电机库
+#include <Stepper_28BYJ_48.h> //更新的步进电机库文件
 #include "chars.h"         //点阵字符库 
-    
+   
 #define SERVO_PIN 2   //写字舵机接口号 
 #define DOT_PIN   3   //打点舵机接口号
 
@@ -36,7 +37,7 @@
 
 Servo servo_arm;          //写字舵机
 Servo servo_dot;          //打点舵机
-Stepper stepper(100, 4, 5, 6,7);  // 步进电机  速度100， in1~4端口 4 5 6 7
+Stepper_28BYJ_48 stepper(4,5,6,7);  // 步进电机   in1~4端口 4 5 6 7
 
 SoftwareSerial Bluetooth(0, 1);   // 初始化蓝牙 [RX, TX]    不同型号主板 端口号不同，uno 是 0,1  10,11 都可以
 
@@ -49,11 +50,8 @@ void setup() {
   servo_arm.attach(SERVO_PIN);
   
   pinMode(DOT_PIN, OUTPUT);
-  stepper.setSpeed(100);    //设置走纸步进电机速度，速度太快了扭矩会变小 (建议范围50~120)
-
- //  printString("0123456789 ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz ");  //测试写一些内容
- // printString("HELLO GEEK WORLD!!!     MINI TELEGRAPH  @TAOBAO        ");  //测试写一些内容
- printString(" 123 ABC ");  
+ 
+  printString(" HELLO WORLD! HAPPY TIME    ");   //测试写一些内容
 }
 
 
@@ -91,7 +89,7 @@ void printLine(int b) //画一连续的线
     dot(0);
   }
 
-  stepper.step(30); //走纸幅度 可调节，数值越大，字符越扁
+  stepper.step(7); //走纸幅度 可调节，数值越大，字符越扁
 }
 
 
@@ -107,7 +105,7 @@ int n = 0;
       printLine(chars[c][i]);
       n++;
     }
-    else stepper.step(11 * 2);
+    else stepper.step(7); //走纸幅度 可调节，数值越大，字符越扁
   }
 }
 
@@ -138,5 +136,6 @@ void loop()
   Bluetooth.write(1);
   delay(1500);
 }
+
 
 

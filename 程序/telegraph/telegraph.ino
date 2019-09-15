@@ -97,6 +97,7 @@ void printLine(int b) //画一连续的线
 
 void printChar(char c)  //打印某一字符
 {
+  
 int n = 0;
   Serial.println(c);
   for (int i = 0; i < 8; i++)

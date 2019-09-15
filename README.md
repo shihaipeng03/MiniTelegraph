@@ -1,5 +1,6 @@
 # MiniTelegraph
 拿着手机不知所措的同学，请按上面的 View code 就可以看到程序和说明书了，部分手机不能在线阅读pdf，可以下载后再看。
+下载也是绿色的 Clone or Download 按钮下载。
 
 推荐直接使用Arduino.cc官网的web版编译器 
 部分内容可能翻墙后更方便，推荐一个翻墙工具， https://github.com/bannedbook/fanqiang/wiki

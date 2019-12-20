@@ -16,14 +16,14 @@
 #define DOT_PIN   3   //打点舵机接口号
 
 
-#define DOT_UP_DELAY 120    //打点等待时间  
-#define DOT_DOWN_DELAY 50   //打点等待时间   //要符合舵机动作幅度的时间，延时过小会导致无法打到
+#define DOT_UP_DELAY 140    //打点等待时间  
+#define DOT_DOWN_DELAY 70   //打点等待时间   //要符合舵机动作幅度的时间，延时过小会导致无法打到
 
-#define DOT_UP 1100     //打点舵机提升到的位置，让笔刚好贴到纸上，不能抬的幅度过高
-#define DOT_DOWN 1200   //下降后的位置
+#define DOT_UP 1240     //打点舵机提升到的位置，让笔刚好贴到纸上，不能抬的幅度过高
+#define DOT_DOWN 1400   //下降后的位置
 //    
-#define SERVO_MIN 25   //写字舵机的字顶部位置
-#define SERVO_MAX 65   //底部位置    
+#define SERVO_MIN 80   //写字舵机的字顶部位置
+#define SERVO_MAX 110   //底部位置    
 
 #define SERVO_STEPS 16  //字符的高度，数值越小，字符越大，建议范围（10~30）
 #define LINE_TAB 9     //字符的基线位置，过大会超出纸的高度
@@ -44,15 +44,22 @@ SoftwareSerial Bluetooth(0, 1);   // 初始化蓝牙 [RX, TX]    不同型号主
 void setup() {
   Bluetooth.begin(9600);
   Serial.begin(9600); //调试代码
+   pinMode(DOT_PIN, OUTPUT);
+   pinMode(SERVO_PIN, OUTPUT);
+    
   servo_dot.attach(DOT_PIN);
   servo_dot.write(DOT_DOWN);
  
   servo_arm.attach(SERVO_PIN);
   servo_arm.write((SERVO_MIN + SERVO_MAX) / 2);
   
-  pinMode(DOT_PIN, OUTPUT);
+ 
  
   printString("Test OK!");   //测试写一些内容
+  delay(5000);
+
+  printString("     Stay hungry, Stay foolish   ");
+  delay(2000);
 }
 
 
@@ -90,7 +97,7 @@ void printLine(int b) //画一连续的线
     dot(0);
   }
 
-  stepper.step(7); //走纸幅度 可调节，数值越大，字符越扁
+  stepper.step(8); //走纸幅度 可调节，数值越大，字符越扁
 }
 
 
@@ -107,7 +114,7 @@ int n = 0;
       printLine(chars[c][i]);
       n++;
     }
-    else stepper.step(7); //走纸幅度 可调节，数值越大，字符越扁
+    else stepper.step(8); //走纸幅度 可调节，数值越大，字符越扁
   }
 }
 
@@ -128,9 +135,9 @@ void loop()
     servo_dot.attach(DOT_PIN);
     servo_dot.write(DOT_DOWN);
     servo_arm.attach(SERVO_PIN);
-    while(Bluetooth.available() > 2) {    //写串口接收到的字，最后2位的换行符不写。
+    while(Bluetooth.available() > 0) {    //写串口接收到的字符。
       n =  Bluetooth.read();
-      if(n >= 2) printChar((char)n);
+      if(n >= 31) printChar((char)n);     //ASCII表中31以上的字符才打印。
     }
   }
   servo_dot.detach();

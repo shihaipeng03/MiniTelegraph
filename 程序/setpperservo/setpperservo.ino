@@ -4,7 +4,8 @@
 
 
 #include <Servo.h>        //舵机库
-#include <Stepper_28BYJ_48.h> //更新的步进电机库文件
+#include <Stepper_28BYJ_48.h> //步进电机库文件  如果没有该lib请按Ctrl+Shift+I 从 库管理器中搜索 Stepper_28BYJ_48，并安装
+//上面报错，请观看视频教程 2分30秒起 https://www.ixigua.com/6846441137809392131
 
     
 #define SERVO_PIN 2   //写字舵机接口号 

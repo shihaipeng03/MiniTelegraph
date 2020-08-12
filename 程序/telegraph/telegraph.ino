@@ -7,9 +7,10 @@
 //强烈推荐使用web版编译器查看
 
 #include <SoftwareSerial.h>  //蓝牙串口库 没有蓝牙模块也可以通过PC串口传输文字 
-
 #include <Servo.h>        //舵机库
-#include <Stepper_28BYJ_48.h> //更新的步进电机库文件
+#include <Stepper_28BYJ_48.h> //步进电机库文件  
+//如果没有该lib请按Ctrl+Shift+I 从 库管理器中搜索 Stepper_28BYJ_48，并安装
+//上面报错，请观看视频教程 2分30秒起 https://www.ixigua.com/6846441137809392131
 #include "chars.h"         //点阵字符库 
    
 #define SERVO_PIN 2   //写字舵机接口号 

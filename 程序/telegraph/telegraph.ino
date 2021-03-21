@@ -3,8 +3,10 @@
 //Mini Telegraph 电报机 写字程序
 //本程序对应商品 https://item.taobao.com/item.htm?spm=a1z10.1-c.w4004-1266050943.20.5eaf3c6eT6FuhE&id=576633734176
 
-//本程序实时更新的最新版本 https://create.arduino.cc/editor/wjd76/68303116-0495-4580-b125-6a339187df4f/preview
-//强烈推荐使用web版编译器查看
+//部分系统有不不能正常安装驱动的情况，可以手工安装驱动（CH340 CH341都可以适用）。
+//WIN驱动下载链接： https://sparks.gogo.co.nz/assets/_site_/downloads/CH34x_Install_Windows_v3_4.zip  
+//其他系统请到  https://sparks.gogo.co.nz/ch340.html  （CH34X驱动大全或自行搜索） 
+//注意，x64的win7系统或者是ghost的系统可能会无法安装驱动。
 
 #include <SoftwareSerial.h>  //蓝牙串口库 没有蓝牙模块也可以通过PC串口传输文字 
 #include <Servo.h>        //舵机库
@@ -17,23 +19,24 @@
 #define DOT_PIN   3   //打点舵机接口号
 
 
-#define DOT_UP_DELAY 140    //打点等待时间  
-#define DOT_DOWN_DELAY 70   //打点等待时间   //要符合舵机动作幅度的时间，延时过小会导致无法打到
+#define DOT_UP_DELAY 80    //打点等待时间  
+#define DOT_DOWN_DELAY 80   //打点等待时间   //要符合舵机动作幅度的时间，延时过小会导致无法打到
 
-#define DOT_UP 1240     //打点舵机提升到的位置，让笔刚好贴到纸上，不能抬的幅度过高
-#define DOT_DOWN 1400   //下降后的位置
+#define DOT_UP 860     //打点舵机提升到的位置，让笔刚好贴到纸上，不能抬的幅度过高
+#define DOT_DOWN 999   //下降后的位置
 //    
 #define SERVO_MIN 80   //写字舵机的字顶部位置
-#define SERVO_MAX 110   //底部位置    
+#define SERVO_MAX 120   //底部位置    
 
 #define SERVO_STEPS 16  //字符的高度，数值越小，字符越大，建议范围（10~30）
-#define LINE_TAB 9     //字符的基线位置，过大会超出纸的高度
+#define LINE_TAB 7     //字符的基线位置，过大会超出纸的高度
+
+#define PAPER_STEP 5     //电机走纸幅度，数值越大，字符越扁
 
 #define SERVO_STEP (SERVO_MAX - SERVO_MIN) / SERVO_STEPS
 
 #define SERVO_DELAY SERVO_STEP*5
 
-#define STEPPER_STEP 600 / SERVO_STEPS
 
 
 Servo servo_arm;          //写字舵机
@@ -98,7 +101,7 @@ void printLine(int b) //画一连续的线
     dot(0);
   }
 
-  stepper.step(8); //走纸幅度 可调节，数值越大，字符越扁
+  stepper.step(PAPER_STEP); //走纸幅度 可调节，数值越大，字符越扁
 }
 
 
@@ -115,7 +118,7 @@ int n = 0;
       printLine(chars[c][i]);
       n++;
     }
-    else stepper.step(8); //走纸幅度 可调节，数值越大，字符越扁
+    else stepper.step(PAPER_STEP); //走纸幅度 可调节，数值越大，字符越扁
   }
 }
 
